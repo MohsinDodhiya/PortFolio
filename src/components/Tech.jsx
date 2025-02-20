@@ -7,29 +7,6 @@ import { textVariant } from "../utils/motion";
 import { styles } from "../styles";
 
 const Tech = () => {
-  const colorMapping = {
-    "HTML 5": "purple",
-    "CSS 3": "purple",
-    JavaScript: "purple",
-    TypeScript: "purple",
-    "React.js": "purple",
-    "Next.js": "purple",
-    "Redux Toolkit": "purple",
-    Zustand: "purple",
-    "Tailwind CSS": "purple",
-    "Node.js": "purple",
-    MongoDB: "purple",
-    Appwrite: "purple",
-    Prisma: "purple",
-    Firebase: "purple",
-    "Socket.io": "purple",
-    "Bcrypt.js": "purple",
-    Axios: "purple",
-    "ShadCN UI": "purple",
-    Git: "purple",
-    Figma: "purple",
-  };
-
   return (
     <>
       <motion.div variants={textVariant()}>
@@ -51,14 +28,13 @@ const Tech = () => {
                   items={[
                     {
                       icon: tech.icon,
-                      color: colorMapping[tech.name] || "gray",
+                      color: "purple",
                       label: tech.name,
                     },
                   ]}
                   className="h-16 w-16"
                 />
               </div>
-              <span className="mt-6 text-sm text-white opacity-80">{}</span>
             </div>
           ))}
         </div>
@@ -67,4 +43,4 @@ const Tech = () => {
   );
 };
 
-export default SectionWrapper(Tech, "");
+export default SectionWrapper(Tech, "tech");

@@ -31,8 +31,16 @@ export const navLinks = [
     title: "About",
   },
   {
-    id: "projects",
-    title: "Projects",
+    id: "experience",
+    title: "Experience",
+  },
+  {
+    id: "tech",
+    title: "Skill",
+  },
+  {
+    id: "project",
+    title: "Project",
   },
   {
     id: "contact",
@@ -46,7 +54,7 @@ const services = [
     icon: web,
   },
   {
-    title: "Full Stack Developer",
+    title: "MERN / Full Stack Developer",
     icon: backend,
   },
   {
@@ -84,11 +92,11 @@ const technologies = [
 
 const experiences = [
   {
-    title: "MERN Stack Developer",
-    company_name: "Freelance & Personal Projects",
+    title: "REACT / MERN Stack Developer",
+    company_name: "PROJECT Working",
     icon: web,
     iconBg: "#383E56",
-    date: "Ongoing",
+    date: "Finding",
     points: [
       "Developed scalable web applications using React.js, Next.js, and Node.js.",
       "Implemented state management using Redux Toolkit and Zustand.",
@@ -131,6 +139,7 @@ const projects = [
       "A full-stack social media platform with authentication, file uploads, and real-time interactions.",
     tags: [
       { name: "React.js", color: "blue-text-gradient" },
+      { name: "React-Query", color: "blue-text-gradient" },
       { name: "Appwrite", color: "green-text-gradient" },
       { name: "Zustand", color: "pink-text-gradient" },
     ],
@@ -142,6 +151,7 @@ const projects = [
     description:
       "A real-time chat application with Socket.io and Zustand for state management.",
     tags: [
+      { name: "MERN", color: "blue-text-gradient" },
       { name: "React.js", color: "blue-text-gradient" },
       { name: "Node.js", color: "green-text-gradient" },
       { name: "Socket.io", color: "pink-text-gradient" },
@@ -155,6 +165,7 @@ const projects = [
       "AI-powered feedback system using OpenAI API with secure authentication and email integration.",
     tags: [
       { name: "Next.js", color: "blue-text-gradient" },
+      { name: "TypeScript", color: "blue-text-gradient" },
       { name: "Mongoose", color: "green-text-gradient" },
       { name: "Zod", color: "pink-text-gradient" },
     ],
