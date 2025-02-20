@@ -2,44 +2,50 @@ import React from "react";
 
 const GlassIcons = ({ items, className }) => {
   const renderIcon = (item) => {
-    if (
-      typeof item.icon === "string" &&
-      (item.icon.startsWith("http") || item.icon.startsWith("/"))
-    ) {
+    try {
+      if (
+        typeof item.icon === "string" &&
+        (item.icon.startsWith("http") || item.icon.startsWith("/"))
+      ) {
+        return (
+          <img
+            src={item.icon}
+            alt={item.label || "Technology icon"}
+            className="w-full h-full object-contain"
+            style={{
+              filter: `
+                drop-shadow(0 0 10px rgba(167, 39, 255, 0.6))
+                drop-shadow(0 0 20px rgba(167, 39, 255, 0.4))
+                drop-shadow(0 0 30px rgba(167, 39, 255, 0.2))
+              `,
+            }}
+          />
+        );
+      }
       return (
-        <img
-          src={item.icon}
-          className="w-full h-full object-contain"
+        <div
+          className="w-[3.5em] h-[3.5em] flex items-center justify-center"
           style={{
             filter: `
               drop-shadow(0 0 10px rgba(167, 39, 255, 0.6))
               drop-shadow(0 0 20px rgba(167, 39, 255, 0.4))
               drop-shadow(0 0 30px rgba(167, 39, 255, 0.2))
             `,
+            transform: "scale(1.5)",
           }}
-        />
+        >
+          {item.icon}
+        </div>
       );
+    } catch (error) {
+      // Return fallback UI if icon rendering fails
+      return <div className="w-[3.5em] h-[3.5em] bg-purple-600 rounded-full"></div>;
     }
-    return (
-      <div
-        className="w-[3.5em] h-[3.5em] flex items-center justify-center"
-        style={{
-          filter: `
-            drop-shadow(0 0 10px rgba(167, 39, 255, 0.6))
-            drop-shadow(0 0 20px rgba(167, 39, 255, 0.4))
-            drop-shadow(0 0 30px rgba(167, 39, 255, 0.2))
-          `,
-          transform: "scale(1.5)",
-        }}
-      >
-        {item.icon}
-      </div>
-    );
   };
 
   return (
     <div
-      className={`grid gap-[3em] grid-cols-2 md:grid-cols-3 lg:grid-cols-5 mx-auto py-[2em] overflow-visible ${
+      className={`grid gap-[3em] grid-cols-2 md:grid-cols-3 lg:grid-cols-5 mx-auto py-[2em] overflow-hidden ${
         className || ""
       }`}
     >
@@ -75,8 +81,8 @@ const GlassIcons = ({ items, className }) => {
               {renderIcon(item)}
             </span>
           </span>
-          {/* Label */}
-          <span className="absolute top-full left-0 right-0 text-center whitespace-nowrap leading-[2] text-base opacity-0 transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.83,0,0.17,1)] translate-y-0 group-hover:opacity-100 group-hover:[transform:translateY(20%)]">
+          {/* Label - with truncate to prevent text overflow */}
+          <span className="absolute top-full left-0 right-0 text-center whitespace-nowrap overflow-hidden truncate leading-[2] text-base opacity-0 transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.83,0,0.17,1)] translate-y-0 group-hover:opacity-100 group-hover:[transform:translateY(20%)]">
             {item.label}
           </span>
         </button>
