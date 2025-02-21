@@ -23,6 +23,10 @@ import {
   socketio,
   bcrypt,
   axios,
+  Snapgram1,
+  chatApp,
+  feedBack,
+  blogApp,
 } from "../assets";
 
 export const navLinks = [
@@ -143,8 +147,9 @@ const projects = [
       { name: "Appwrite", color: "green-text-gradient" },
       { name: "Zustand", color: "pink-text-gradient" },
     ],
-    image: "snapgram_image", // Replace with actual image path
-    source_code_link: "https://github.com/MohsinDodhiya/Snapgram",
+    image: Snapgram1,
+    source_code_link:
+      "https://github.com/MohsinDodhiya/SnapGram-Insta-Clone.git",
   },
   {
     name: "RapidChat (MERN Chat App)",
@@ -156,8 +161,8 @@ const projects = [
       { name: "Node.js", color: "green-text-gradient" },
       { name: "Socket.io", color: "pink-text-gradient" },
     ],
-    image: "rapidchat_image", // Replace with actual image path
-    source_code_link: "https://github.com/MohsinDodhiya/RapidChat",
+    image: chatApp,
+    source_code_link: "https://github.com/MohsinDodhiya/RapidChat.git",
   },
   {
     name: "True Feedback AI",
@@ -169,8 +174,8 @@ const projects = [
       { name: "Mongoose", color: "green-text-gradient" },
       { name: "Zod", color: "pink-text-gradient" },
     ],
-    image: "true_feedback_image", // Replace with actual image path
-    source_code_link: "https://github.com/MohsinDodhiya/TrueFeedbackAI",
+    image: feedBack,
+    source_code_link: "https://github.com/MohsinDodhiya/True-FeedBack.git",
   },
   {
     name: "BlogApp",
@@ -181,8 +186,8 @@ const projects = [
       { name: "Appwrite", color: "green-text-gradient" },
       { name: "Redux Toolkit", color: "pink-text-gradient" },
     ],
-    image: "blogapp_image",
-    source_code_link: "https://github.com/MohsinDodhiya/BlogApp",
+    image: blogApp,
+    source_code_link: "https://github.com/MohsinDodhiya/BlogApp.git",
   },
 ];
 

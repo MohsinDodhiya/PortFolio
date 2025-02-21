@@ -35,9 +35,11 @@ import shopify from "./company/shopify.png";
 import starbucks from "./company/starbucks.png";
 import tesla from "./company/tesla.png";
 
-import carrent from "./carrent.png";
-import jobit from "./jobit.png";
-import tripguide from "./tripguide.png";
+import blogApp from "./projectimg/blogApp.png";
+import chatApp from "./projectimg/ChatApp.png";
+import feedBack from "./projectimg/FeebBack1.png";
+import Snapgram1 from "./projectimg/Snapgram1.png";
+import Snapgram2 from "./projectimg/Snapgram2.png";
 
 export {
   logo,
@@ -65,9 +67,6 @@ export {
   shopify,
   starbucks,
   tesla,
-  carrent,
-  jobit,
-  tripguide,
   appwrite,
   axios,
   bcrypt,
@@ -77,4 +76,9 @@ export {
   shadcn,
   socketio,
   zustand,
+  blogApp,
+  chatApp,
+  feedBack,
+  Snapgram1,
+  Snapgram2,
 };
