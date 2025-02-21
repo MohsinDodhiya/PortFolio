@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { styles } from "../styles";
-import ReactJS from "./canvas/ReactJS";
 import { slideIn } from "../utils/motion";
+import ReactJS from "./canvas/ReactJS";
 
 const Hero = () => {
   return (
@@ -32,21 +32,30 @@ const Hero = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className={`${styles.heroSubText} mt-2 text-white-100`}
           >
-            I Develop Scalable ReactJS Web Application <br className="sm:block hidden" />
+            I Develop Scalable ReactJS Web Application{" "}
+            <br className="sm:block hidden" />
             As Frontend Developer
           </motion.p>
         </div>
       </div>
 
-      {/* 3D Model Section */}
-      <div className="absolute top-[300px] md:top-[200px] bottom-0 right-0 lg:-left-[-600px] sm:left-0 max-w-7xl sm:max-w-md mx-auto w-full h-[200px] sm:h-[400px]">
-         <motion.div
+      {/* 3D Model Section - Responsive positioning */}
+      <motion.div
         variants={slideIn("right", "tween", 0.2, 1)}
-        className="xl:flex-1 xl:h-auto md:h-[550px] h-[350px]"
+        className="absolute top-[300px] md:top-[100px] bottom-0 right-0 w-full md:w-1/2 lg:w-2/5 h-[300px] md:h-[400px] pl-0 md:pl-8"
       >
-        <ReactJS />
+        <ReactJS
+          modelConfig={{
+            color: 0x61dafb, // Matching the purple accent color
+            autoRotate: true,
+            initialScale: 2.0,
+          }}
+          containerClassName="w-full h-full"
+          aspectRatio="auto"
+          mobileZOffset={12}
+          desktopZOffset={10}
+        />
       </motion.div>
-      </div>
     </section>
   );
 };

@@ -1,109 +1,60 @@
-"use client";
-
 import { useRef, useEffect, useState, useCallback } from "react";
+import { motion } from "framer-motion";
 import * as THREE from "three";
 
-// Utility functions
-const createMaterials = (reactBlue) => {
-  return {
-    logoMaterial: new THREE.MeshPhysicalMaterial({
-      color: reactBlue,
-      metalness: 0.5,
-      roughness: 0.1,
-      emissive: reactBlue,
-      emissiveIntensity: 0.3,
-      clearcoat: 0.8,
-      transparent: false,
-    }),
-    glowMaterial: new THREE.MeshBasicMaterial({
-      color: reactBlue,
-      transparent: true,
-      opacity: 0.3,
-    }),
-  };
-};
-
-const createEllipticalRing = (radiusX, radiusY, rotation, material) => {
-  const curve = new THREE.EllipseCurve(
-    0,
-    0, // center
-    radiusX,
-    radiusY, // x radius, y radius
-    0,
-    2 * Math.PI, // start angle, end angle
-    false, // clockwise
-    0 // rotation
-  );
-
-  const points = curve.getPoints(100);
-  const tubeGeometry = new THREE.TubeGeometry(
-    new THREE.CatmullRomCurve3(
-      points.map((p) => new THREE.Vector3(p.x, p.y, 0))
-    ),
-    100, // tubular segments
-    0.1, // radius
-    12, // radial segments
-    false // closed
-  );
-
-  const ring = new THREE.Mesh(tubeGeometry, material);
-  ring.rotation.x = rotation.x || 0;
-  ring.rotation.y = rotation.y || 0;
-  ring.rotation.z = rotation.z || 0;
-
-  return ring;
-};
-
-const createElectron = (position, material, glowMaterial) => {
-  const electronGeometry = new THREE.SphereGeometry(0.25, 16, 16);
-  const electron = new THREE.Mesh(electronGeometry, material.clone());
-  electron.material.emissiveIntensity = 0.7;
-
-  if (position) {
-    electron.position.copy(position);
-  }
-
-  const electronGlow = new THREE.Mesh(
-    new THREE.SphereGeometry(0.3, 12, 12),
-    glowMaterial.clone()
-  );
-  electron.add(electronGlow);
-
-  return electron;
-};
-
-const ReactJS = () => {
+const ReactJS = ({
+  modelConfig = {
+    color: 0x61dafb,
+    autoRotate: true,
+    initialScale: 1.0,
+  },
+  containerClassName = "w-full h-full",
+  aspectRatio = "1 / 1",
+  mobileZOffset = 8,
+  desktopZOffset = 6,
+  mobileBreakpoint = 768,
+}) => {
+  // Refs for DOM elements and Three.js objects
+  const containerRef = useRef(null);
   const mountRef = useRef(null);
   const sceneRef = useRef(null);
   const rendererRef = useRef(null);
   const cameraRef = useRef(null);
-  const logoGroupRef = useRef(null);
+  const modelGroupRef = useRef(null);
   const materialsRef = useRef(null);
   const electronsRef = useRef([]);
   const animationRef = useRef(null);
-  const targetRotationRef = useRef(new THREE.Vector2());
   const clockRef = useRef(new THREE.Clock());
-  const timeRef = useRef(0);
+
+  // State for interaction and sizing
+  const [isInteracting, setIsInteracting] = useState(false);
+  const [modelScale, setModelScale] = useState(modelConfig.initialScale);
+  const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
+
+  // Refs for tracking interaction state
+  const targetRotationRef = useRef(new THREE.Vector2());
   const interactionStateRef = useRef({
     isDragging: false,
-    isHovering: false,
     prevTouchPos: { x: 0, y: 0 },
     prevMousePos: { x: 0, y: 0 },
   });
-
-  const [isInteracting, setIsInteracting] = useState(false);
   const isInitializedRef = useRef(false);
 
+  // Initialize the Three.js scene
   const initializeScene = useCallback(() => {
     if (!mountRef.current || isInitializedRef.current) return null;
 
+    // Create scene with transparent background
     const scene = new THREE.Scene();
     scene.background = null;
     sceneRef.current = scene;
 
-    const containerWidth = mountRef.current.clientWidth;
-    const containerHeight = mountRef.current.clientHeight;
+    // Get container dimensions
+    const containerWidth = containerRef.current.clientWidth;
+    const containerHeight = containerRef.current.clientHeight;
+    setDimensions({ width: containerWidth, height: containerHeight });
 
+    // Set up camera with proper aspect ratio
     const camera = new THREE.PerspectiveCamera(
       75,
       containerWidth / containerHeight,
@@ -111,14 +62,18 @@ const ReactJS = () => {
       1000
     );
 
-    camera.position.z = 6;
+    // Set camera position based on screen size
+    const isMobile = window.innerWidth < mobileBreakpoint;
+    camera.position.z = isMobile ? mobileZOffset : desktopZOffset;
     cameraRef.current = camera;
 
+    // Create renderer with high quality settings
     const renderer = new THREE.WebGLRenderer({
       antialias: true,
       powerPreference: "high-performance",
       alpha: true,
     });
+
     renderer.setSize(containerWidth, containerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -127,49 +82,109 @@ const ReactJS = () => {
     rendererRef.current = renderer;
 
     return { scene, camera, renderer };
+  }, [mobileBreakpoint, mobileZOffset, desktopZOffset]);
+
+  // Create electron particle
+  const createElectron = useCallback((position, material, glowMaterial) => {
+    const electronGeometry = new THREE.SphereGeometry(0.25, 16, 16);
+    const electron = new THREE.Mesh(electronGeometry, material.clone());
+    electron.material.emissiveIntensity = 0.7;
+
+    if (position) {
+      electron.position.copy(position);
+    }
+
+    const electronGlow = new THREE.Mesh(
+      new THREE.SphereGeometry(0.3, 12, 12),
+      glowMaterial.clone()
+    );
+    electron.add(electronGlow);
+
+    return electron;
   }, []);
 
-  const createLogo = useCallback(() => {
+  // Create model - using React logo as an example model
+  const createModel = useCallback(() => {
     const scene = sceneRef.current;
     if (!scene) return null;
 
-    const reactBlue = 0x61dafb;
-    const { logoMaterial, glowMaterial } = createMaterials(reactBlue);
-    materialsRef.current = { logoMaterial, glowMaterial };
+    // Materials setup
+    const mainColor = modelConfig.color;
+    const mainMaterial = new THREE.MeshPhysicalMaterial({
+      color: mainColor,
+      metalness: 0.5,
+      roughness: 0.1,
+      emissive: mainColor,
+      emissiveIntensity: 0.3,
+      clearcoat: 0.8,
+    });
 
-    const logoGroup = new THREE.Group();
-    scene.add(logoGroup);
-    logoGroupRef.current = logoGroup;
+    const glowMaterial = new THREE.MeshBasicMaterial({
+      color: mainColor,
+      transparent: true,
+      opacity: 0.3,
+    });
 
+    materialsRef.current = { mainMaterial, glowMaterial };
+
+    // Create model group
+    const modelGroup = new THREE.Group();
+    modelGroup.scale.set(modelScale, modelScale, modelScale);
+    scene.add(modelGroup);
+    modelGroupRef.current = modelGroup;
+
+    // Create nucleus (center sphere)
     const nucleusGeometry = new THREE.SphereGeometry(0.6, 32, 32);
-    const nucleus = new THREE.Mesh(nucleusGeometry, logoMaterial);
-    logoGroup.add(nucleus);
+    const nucleus = new THREE.Mesh(nucleusGeometry, mainMaterial);
+    modelGroup.add(nucleus);
 
+    // Add glow effect
     const glowGeometry = new THREE.SphereGeometry(0.8, 24, 24);
     const nucleusGlow = new THREE.Mesh(glowGeometry, glowMaterial);
-    logoGroup.add(nucleusGlow);
+    modelGroup.add(nucleusGlow);
 
-    const ring1 = createEllipticalRing(
-      2.5,
-      1,
-      { x: 0, y: 0, z: 4 },
-      logoMaterial
-    );
-    const ring2 = createEllipticalRing(
-      2.5,
-      1,
-      { x: 0, y: 0, z: -1 },
-      logoMaterial
-    );
-    const ring3 = createEllipticalRing(
-      2.5,
-      1,
-      { x: Math.PI / 60, y: Math.PI / 45, z: 0 },
-      logoMaterial
-    );
+    // Create orbital rings
+    const createRing = (radiusX, radiusY, rotation) => {
+      const curve = new THREE.EllipseCurve(
+        0,
+        0, // center
+        radiusX,
+        radiusY, // x radius, y radius
+        0,
+        2 * Math.PI, // start angle, end angle
+        false // clockwise
+      );
 
-    logoGroup.add(ring1, ring2, ring3);
+      const points = curve.getPoints(100);
+      const tubeGeometry = new THREE.TubeGeometry(
+        new THREE.CatmullRomCurve3(
+          points.map((p) => new THREE.Vector3(p.x, p.y, 0))
+        ),
+        100, // tubular segments
+        0.1, // radius
+        12, // radial segments
+        false // closed
+      );
 
+      const ring = new THREE.Mesh(tubeGeometry, mainMaterial);
+      ring.rotation.x = rotation.x || 0;
+      ring.rotation.y = rotation.y || 0;
+      ring.rotation.z = rotation.z || 0;
+
+      return ring;
+    };
+
+    // Add three rings at different orientations
+    const ring1 = createRing(2.5, 1, { x: 0, y: 0, z: 4 });
+    const ring2 = createRing(2.5, 1, { x: 0, y: 0, z: -1 });
+    const ring3 = createRing(2.5, 1, {
+      x: Math.PI / 60,
+      y: Math.PI / 45,
+      z: 0,
+    });
+    modelGroup.add(ring1, ring2, ring3);
+
+    // Add electrons (orbiting particles)
     const positions = [
       new THREE.Vector3(3, 0, 0),
       new THREE.Vector3(-3, 0, 0),
@@ -180,14 +195,14 @@ const ReactJS = () => {
     ];
 
     const electrons = positions.map((pos, i) => {
-      const electron = createElectron(pos, logoMaterial, glowMaterial);
+      const electron = createElectron(pos, mainMaterial, glowMaterial);
       if (i >= 2 && i < 4) {
         electron.rotation.z = Math.PI / 3;
       } else if (i >= 4) {
         electron.rotation.x = Math.PI / 2;
         electron.rotation.y = Math.PI / 6;
       }
-      logoGroup.add(electron);
+      modelGroup.add(electron);
       return {
         mesh: electron,
         initialPos: pos.clone(),
@@ -198,6 +213,7 @@ const ReactJS = () => {
     });
     electronsRef.current = electrons;
 
+    // Add lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
     scene.add(ambientLight);
 
@@ -205,28 +221,29 @@ const ReactJS = () => {
     mainLight.position.set(5, 5, 5);
     scene.add(mainLight);
 
-    const backLight = new THREE.DirectionalLight(reactBlue, 0.7);
+    const backLight = new THREE.DirectionalLight(mainColor, 0.7);
     backLight.position.set(-5, -5, -5);
     scene.add(backLight);
 
-    const centerLight = new THREE.PointLight(reactBlue, 2, 10);
+    const centerLight = new THREE.PointLight(mainColor, 2, 10);
     centerLight.position.set(0, 0, 0);
-    logoGroup.add(centerLight);
+    modelGroup.add(centerLight);
 
-    return { nucleus, nucleusGlow, centerLight, logoGroup };
-  }, []);
+    return { modelGroup, mainMaterial, glowMaterial, electrons };
+  }, [modelConfig.color, modelScale, createElectron]);
 
+  // Set up user interaction handlers
   const setupInteraction = useCallback(() => {
     const renderer = rendererRef.current;
     if (!renderer) return () => {};
 
+    // Handle mouse/touch movement
     const handleMove = (deltaX, deltaY) => {
-      // Adjust rotation sensitivity
       const rotationSpeed = 0.005;
       targetRotationRef.current.y += deltaX * rotationSpeed;
       targetRotationRef.current.x += deltaY * rotationSpeed;
 
-      // Clamp rotation on X axis to prevent flipping
+      // Prevent model from flipping by clamping rotation
       targetRotationRef.current.x = THREE.MathUtils.clamp(
         targetRotationRef.current.x,
         -Math.PI / 3,
@@ -234,6 +251,7 @@ const ReactJS = () => {
       );
     };
 
+    // Touch handlers
     const handleTouchMove = (e) => {
       e.preventDefault(); // Prevent scrolling while touching
       if (!interactionStateRef.current.isDragging) return;
@@ -250,6 +268,18 @@ const ReactJS = () => {
       };
     };
 
+    const handleTouchStart = (e) => {
+      e.preventDefault();
+      setIsInteracting(true);
+      interactionStateRef.current.isDragging = true;
+      const touch = e.touches[0];
+      interactionStateRef.current.prevTouchPos = {
+        x: touch.clientX,
+        y: touch.clientY,
+      };
+    };
+
+    // Mouse handlers
     const handleMouseMove = (e) => {
       e.preventDefault();
       if (!interactionStateRef.current.isDragging) return;
@@ -275,23 +305,13 @@ const ReactJS = () => {
       };
     };
 
-    const handleTouchStart = (e) => {
-      e.preventDefault();
-      setIsInteracting(true);
-      interactionStateRef.current.isDragging = true;
-      const touch = e.touches[0];
-      interactionStateRef.current.prevTouchPos = {
-        x: touch.clientX,
-        y: touch.clientY,
-      };
-    };
-
+    // End interaction handler for both mouse and touch
     const handleEnd = () => {
       setIsInteracting(false);
       interactionStateRef.current.isDragging = false;
     };
 
-    // Add passive: false to prevent default touch behaviors
+    // Add event listeners with passive: false to prevent default behaviors
     renderer.domElement.addEventListener("touchstart", handleTouchStart, {
       passive: false,
     });
@@ -305,6 +325,7 @@ const ReactJS = () => {
     renderer.domElement.addEventListener("mouseup", handleEnd);
     renderer.domElement.addEventListener("mouseleave", handleEnd);
 
+    // Return cleanup function
     return () => {
       renderer.domElement.removeEventListener("touchstart", handleTouchStart);
       renderer.domElement.removeEventListener("touchmove", handleTouchMove);
@@ -317,42 +338,37 @@ const ReactJS = () => {
     };
   }, []);
 
+  // Animation loop
   const animate = useCallback(() => {
-    const logoGroup = logoGroupRef.current;
+    const modelGroup = modelGroupRef.current;
     const renderer = rendererRef.current;
     const camera = cameraRef.current;
     const scene = sceneRef.current;
     const electrons = electronsRef.current;
-    const materials = materialsRef.current;
 
-    if (
-      !logoGroup ||
-      !renderer ||
-      !camera ||
-      !scene ||
-      !electrons ||
-      !materials
-    ) {
+    if (!modelGroup || !renderer || !camera || !scene || !electrons) {
       animationRef.current = requestAnimationFrame(animate);
       return;
     }
 
     const delta = clockRef.current.getDelta();
-    timeRef.current += delta;
 
-    // Smooth rotation with easing
+    // Apply smooth rotation with easing
     const rotationEasing = 0.08;
-    logoGroup.rotation.y +=
-      (targetRotationRef.current.y - logoGroup.rotation.y) * rotationEasing;
-    logoGroup.rotation.x +=
-      (targetRotationRef.current.x - logoGroup.rotation.x) * rotationEasing;
+    modelGroup.rotation.y +=
+      (targetRotationRef.current.y - modelGroup.rotation.y) * rotationEasing;
+    modelGroup.rotation.x +=
+      (targetRotationRef.current.x - modelGroup.rotation.x) * rotationEasing;
 
-    // Add slight auto-rotation when not interacting
-    if (!interactionStateRef.current.isDragging) {
+    // Auto-rotation when not being interacted with
+    if (!interactionStateRef.current.isDragging && modelConfig.autoRotate) {
       targetRotationRef.current.y += delta * 0.1;
     }
 
-    // Update electron positions
+    // Apply current scale
+    modelGroup.scale.set(modelScale, modelScale, modelScale);
+
+    // Update electron positions (orbiting particles)
     electrons.forEach((electronData) => {
       electronData.angle += electronData.speed * delta * 60;
       const newX =
@@ -368,10 +384,11 @@ const ReactJS = () => {
 
     renderer.render(scene, camera);
     animationRef.current = requestAnimationFrame(animate);
-  }, []);
+  }, [modelConfig.autoRotate, modelScale]);
 
+  // Handle window resize
   const handleResize = useCallback(() => {
-    const container = mountRef.current;
+    const container = containerRef.current;
     const renderer = rendererRef.current;
     const camera = cameraRef.current;
 
@@ -379,16 +396,33 @@ const ReactJS = () => {
 
     const containerWidth = container.clientWidth;
     const containerHeight = container.clientHeight;
+    setDimensions({ width: containerWidth, height: containerHeight });
 
-    // Adjust camera based on container size
+    // Update camera aspect ratio and position based on screen size
     camera.aspect = containerWidth / containerHeight;
-    camera.position.z = containerWidth < 400 ? 14 : 12;
+    const isMobile = window.innerWidth < mobileBreakpoint;
+    camera.position.z = isMobile ? mobileZOffset : desktopZOffset;
     camera.updateProjectionMatrix();
 
+    // Update renderer size
     renderer.setSize(containerWidth, containerHeight);
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-  }, []);
+  }, [mobileBreakpoint, mobileZOffset, desktopZOffset]);
 
+  // Scale controls
+  const increaseScale = () => {
+    setModelScale((prev) => Math.min(prev + 0.1, 2.0));
+  };
+
+  const decreaseScale = () => {
+    setModelScale((prev) => Math.max(prev - 0.1, 0.5));
+  };
+
+  const resetScale = () => {
+    setModelScale(modelConfig.initialScale);
+  };
+
+  // Setup and cleanup effect
   useEffect(() => {
     if (isInitializedRef.current) return;
 
@@ -396,7 +430,7 @@ const ReactJS = () => {
     if (!sceneSetup) return;
 
     isInitializedRef.current = true;
-    createLogo();
+    createModel();
     const cleanupEvents = setupInteraction();
 
     clockRef.current.start();
@@ -404,6 +438,7 @@ const ReactJS = () => {
 
     window.addEventListener("resize", handleResize);
 
+    // Cleanup function
     return () => {
       isInitializedRef.current = false;
       cleanupEvents();
@@ -416,7 +451,6 @@ const ReactJS = () => {
 
       // Clean up Three.js objects
       if (sceneRef.current) {
-        // Dispose of all meshes and materials in the scene
         sceneRef.current.traverse((object) => {
           if (object.isMesh) {
             if (object.geometry) {
@@ -431,17 +465,14 @@ const ReactJS = () => {
         });
       }
 
-      // Dispose of materials stored in materialsRef
+      // Dispose of materials
       if (materialsRef.current) {
-        if (materialsRef.current.logoMaterial) {
-          materialsRef.current.logoMaterial.dispose();
-        }
-        if (materialsRef.current.glowMaterial) {
-          materialsRef.current.glowMaterial.dispose();
-        }
+        Object.values(materialsRef.current).forEach((material) => {
+          if (material) material.dispose();
+        });
       }
 
-      // Dispose of the renderer
+      // Dispose of renderer
       if (rendererRef.current) {
         rendererRef.current.dispose();
         if (mountRef.current && rendererRef.current.domElement) {
@@ -449,25 +480,112 @@ const ReactJS = () => {
         }
       }
     };
-  }, [initializeScene, createLogo, setupInteraction, animate, handleResize]);
+  }, [
+    initializeScene,
+    createModel,
+    setupInteraction,
+    animate,
+    handleResize,
+    modelConfig.initialScale,
+  ]);
 
   return (
-    <div className="flex flex-col items-center justify-center w-full select-none">
+    <div ref={containerRef} className={containerClassName}>
+      {/* 3D Model Container */}
       <div
-        ref={mountRef}
-        className={`w-full h-full flex justify-center items-center overflow-hidden 
-                  ${isInteracting ? "cursor-grabbing" : "cursor-grab"}`}
+        className="relative w-full h-full"
         style={{
-          aspectRatio: "1 / 1",
-          touchAction: "none",
-          WebkitTouchCallout: "none",
-          WebkitUserSelect: "none",
-          KhtmlUserSelect: "none",
-          MozUserSelect: "none",
-          msUserSelect: "none",
-          userSelect: "none",
+          aspectRatio: aspectRatio,
         }}
-      />
+      >
+        {/* Three.js mount point */}
+        <motion.div
+          ref={mountRef}
+          className={`absolute inset-0 flex justify-center items-center overflow-hidden 
+                     ${isInteracting ? "cursor-grabbing" : "cursor-grab"}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          style={{
+            touchAction: "none",
+            WebkitTouchCallout: "none",
+            WebkitUserSelect: "none",
+            MozUserSelect: "none",
+            msUserSelect: "none",
+            userSelect: "none",
+          }}
+        />
+
+        {/* Controls Overlay */}
+        <div className="absolute bottom-4 right-4 flex flex-col space-y-2">
+          <button
+            onClick={increaseScale}
+            className="bg-gray-800 bg-opacity-60 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-opacity-80 transition-all"
+            aria-label="Increase size"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+              />
+            </svg>
+          </button>
+          <button
+            onClick={decreaseScale}
+            className="bg-gray-800 bg-opacity-60 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-opacity-80 transition-all"
+            aria-label="Decrease size"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M18 12H6"
+              />
+            </svg>
+          </button>
+          <button
+            onClick={resetScale}
+            className="bg-gray-800 bg-opacity-60 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-opacity-80 transition-all"
+            aria-label="Reset size"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+              />
+            </svg>
+          </button>
+        </div>
+
+        {/* Info text overlay - optional */}
+        <div className="absolute bottom-4 left-4 text-white text-xs bg-black bg-opacity-50 px-2 py-1 rounded">
+          {dimensions.width.toFixed(0)} x {dimensions.height.toFixed(0)} |
+          Scale: {modelScale.toFixed(1)}
+        </div>
+      </div>
     </div>
   );
 };
