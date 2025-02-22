@@ -72,17 +72,17 @@ const services = [
 ];
 
 const technologies = [
-  { name: "HTML 5", icon: html },
-  { name: "CSS 3", icon: css },
+  // { name: "HTML 5", icon: html },
+  // { name: "CSS 3", icon: css },
   { name: "JavaScript", icon: javascript },
   { name: "TypeScript", icon: typescript },
-  { name: "React.js", icon: reactjs },
+  // { name: "React.js", icon: reactjs },
   { name: "Next.js", icon: nextjs },
-  { name: "Redux Toolkit", icon: redux },
+  // { name: "Redux Toolkit", icon: redux },
   { name: "Zustand", icon: zustand },
-  { name: "Tailwind CSS", icon: tailwind },
-  { name: "Node.js", icon: nodejs },
-  { name: "MongoDB", icon: mongodb },
+  // { name: "Tailwind CSS", icon: tailwind },
+  // { name: "Node.js", icon: nodejs },
+  // { name: "MongoDB", icon: mongodb },
   { name: "Appwrite", icon: appwrite },
   { name: "Prisma", icon: prisma },
   { name: "Firebase", icon: firebase },
@@ -91,7 +91,7 @@ const technologies = [
   { name: "Axios", icon: axios },
   { name: "ShadCN UI", icon: shadcn },
   { name: "Git", icon: git },
-  { name: "Figma", icon: figma },
+  // { name: "Figma", icon: figma },
 ];
 
 const experiences = [
