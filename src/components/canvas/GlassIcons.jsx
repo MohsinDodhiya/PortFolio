@@ -42,7 +42,7 @@ const GlassIcons = ({ items = [], className }) => {
 
   return (
     <div
-      className={`grid gap-[3em] grid-cols-1 md:grid-cols-3 lg:grid-cols-5 mx-auto py-[2em] ${
+      className={`grid gap-[4em] grid-cols-2 md:grid-cols-3 lg:grid-cols-5 mx-auto py-[2em] ${
         className || ""
       }`}
     >

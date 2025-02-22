@@ -1,4 +1,4 @@
-export const textVariant = (delay) => {
+export const textVariant = () => {
   return {
     hidden: {
       y: -50,
@@ -10,7 +10,7 @@ export const textVariant = (delay) => {
       transition: {
         type: "spring",
         duration: 1.25,
-        delay: delay,
+        delay: 0.5,
       },
     },
   };

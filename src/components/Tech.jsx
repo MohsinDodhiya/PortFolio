@@ -1,4 +1,3 @@
-"use client";
 import { SectionWrapper } from "../hoc";
 import GlassIcons from "./canvas/GlassIcons";
 import { motion } from "framer-motion";
@@ -22,9 +21,7 @@ const Tech = () => {
         <h2 className={`${styles.sectionHeadText} text-center`}>Skills</h2>
       </motion.div>
 
-      <div className="flex justify-center items-center w-full mt-10">
-        <GlassIcons items={glassIconItems} />
-      </div>
+      <GlassIcons items={glassIconItems} />
     </>
   );
 };

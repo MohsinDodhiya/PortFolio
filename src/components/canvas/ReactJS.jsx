@@ -239,7 +239,7 @@ const ReactJS = ({
 
     // Handle mouse/touch movement
     const handleMove = (deltaX, deltaY) => {
-      const rotationSpeed = 0.005;
+      const rotationSpeed = 0.008;
       targetRotationRef.current.y += deltaX * rotationSpeed;
       targetRotationRef.current.x += deltaY * rotationSpeed;
 
@@ -370,7 +370,7 @@ const ReactJS = ({
 
     // Update electron positions (orbiting particles)
     electrons.forEach((electronData) => {
-      electronData.angle += electronData.speed * delta * 60;
+      electronData.angle += electronData.speed * delta * 70;
       const newX =
         electronData.initialPos.x * Math.cos(electronData.angle) -
         electronData.initialPos.y * Math.sin(electronData.angle);
@@ -501,7 +501,7 @@ const ReactJS = ({
         {/* Three.js mount point */}
         <motion.div
           ref={mountRef}
-          className={`absolute inset-0 flex justify-center items-center overflow-hidden 
+          className={`absolute inset-0 flex justify-center items-center overflow-hidden out-mohsin
                      ${isInteracting ? "cursor-grabbing" : "cursor-grab"}`}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -517,7 +517,7 @@ const ReactJS = ({
         />
 
         {/* Controls Overlay */}
-        <div className="absolute bottom-4 right-4 flex flex-col space-y-2">
+        {/* <div className="absolute bottom-4 right-4 flex flex-col space-y-2">
           <button
             onClick={increaseScale}
             className="bg-gray-800 bg-opacity-60 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-opacity-80 transition-all"
@@ -578,13 +578,13 @@ const ReactJS = ({
               />
             </svg>
           </button>
-        </div>
+        </div> */}
 
         {/* Info text overlay - optional */}
-        <div className="absolute bottom-4 left-4 text-white text-xs bg-black bg-opacity-50 px-2 py-1 rounded">
+        {/* <div className="absolute bottom-4 left-4 text-white text-xs bg-black bg-opacity-50 px-2 py-1 rounded">
           {dimensions.width.toFixed(0)} x {dimensions.height.toFixed(0)} |
           Scale: {modelScale.toFixed(1)}
-        </div>
+        </div> */}
       </div>
     </div>
   );

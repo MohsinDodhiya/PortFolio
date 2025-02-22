@@ -1,9 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* @import "tailwindcss"; */
 * {
   margin: 0;
   padding: 0;
@@ -14,7 +14,10 @@
   /* outline: 1px solid red; */
 }
 .out-mohsin{
-  outline: 5px solid red;
+  outline: 2px solid yellow;
+}
+.out-mohsin1{
+  outline: 2px solid rgb(255, 0, 187);
 }
 .hash-span {
   margin-top: -100px;
