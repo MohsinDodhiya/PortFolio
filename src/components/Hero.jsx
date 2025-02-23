@@ -34,7 +34,8 @@ const Hero = () => {
             animate="show"
             className={`${styles.heroSubText} mt-2 text-white-100`}
           >
-            I Build Scalable ReactJS WebApps<br className="sm:block hidden" />
+            I Build Scalable ReactJS WebApps
+            <br className="sm:block hidden" />
             Focusing on Performance and User Engagement...
           </motion.p>
           <motion.div
@@ -44,7 +45,7 @@ const Hero = () => {
             className="mt-8"
           >
             <motion.a
-              href="../assets/Resume.pdf"
+              href="/Resume.pdf"
               download="Resume.pdf"
               className="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-[#915EFF] rounded-lg hover:bg-[#915EFF]/90 transition-all"
               whileHover={{ scale: 1.05 }}
