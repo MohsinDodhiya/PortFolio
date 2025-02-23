@@ -1,28 +1,43 @@
 import {
   web,
   backend,
-  creator,
-  mobile,
-  javascript,
-  typescript,
+ 
   html,
   css,
-  reactjs,
-  redux,
-  tailwind,
-  nodejs,
-  mongodb,
-  git,
+  javascript,
+  typescript,
   figma,
-  appwrite,
-  prisma,
-  firebase,
+
+  reactjs,
   nextjs,
   shadcn,
+  tailwind,
+  
+  redux,
   zustand,
+  contextapi,
+
   socketio,
-  bcrypt,
+
+  nodejs,
+  express,
+  mongodb,
+  prisma,
+  appwrite,
+  firebase,
+  
+  reacthookform,
+  zod,
+
+  reactquery,
   axios,
+ 
+  dropzone,
+
+  git,
+  github,
+  vercel,
+
   Snapgram1,
   chatApp,
   feedBack,
@@ -72,26 +87,50 @@ const services = [
 ];
 
 const technologies = [
+  // Fundamental
   { name: "HTML 5", icon: html },
   { name: "CSS 3", icon: css },
-  // { name: "JavaScript", icon: javascript },
-  // { name: "TypeScript", icon: typescript },
-  { name: "React.js", icon: reactjs },
-  // { name: "Next.js", icon: nextjs },
-  { name: "Redux Toolkit", icon: redux },
-  // { name: "Zustand", icon: zustand },
-  { name: "Tailwind CSS", icon: tailwind },
-  { name: "Node.js", icon: nodejs },
-  { name: "MongoDB", icon: mongodb },
-  // { name: "Appwrite", icon: appwrite },
-  // { name: "Prisma", icon: prisma },
-  // { name: "Firebase", icon: firebase },
-  // { name: "Socket.io", icon: socketio },
-  // { name: "Bcrypt.js", icon: bcrypt },
-  // { name: "Axios", icon: axios },
-  // { name: "ShadCN UI", icon: shadcn },
-  // { name: "Git", icon: git },
+  { name: "JavaScript", icon: javascript },
+  { name: "TypeScript", icon: typescript },
   { name: "Figma", icon: figma },
+
+  // Frontend Development
+  { name: "React.js", icon: reactjs },
+  { name: "Next.js", icon: nextjs },
+  { name: "ShadCN UI", icon: shadcn },
+  { name: "Tailwind CSS", icon: tailwind },
+
+  // State Management
+  { name: "Redux Toolkit", icon: redux },
+  { name: "Zustand", icon: zustand },
+  { name: "Context API", icon: contextapi },
+
+  // Real-Time Communication
+  { name: "Socket.IO", icon: socketio },
+
+  // Backend & Database
+  { name: "Node.js", icon: nodejs },
+  { name: "Express.js", icon: express },
+  { name: "MongoDB", icon: mongodb },
+  { name: "Prisma", icon: prisma },
+  { name: "Appwrite", icon: appwrite },
+  { name: "Firebase", icon: firebase },
+
+  // Form Handling & Validation
+  { name: "React Hook Form", icon: reacthookform },
+  { name: "Zod", icon: zod },
+
+  // Data Management
+  { name: "TanStack/React Query", icon: reactquery },
+  { name: "Axios", icon: axios },
+
+  // File Handling
+  { name: "React Dropzone", icon: dropzone },
+
+  // Deployment & Version Control
+  { name: "Git", icon: git },
+  { name: "GitHub", icon: github },
+  { name: "Vercel", icon: vercel },
 ];
 
 const experiences = [
