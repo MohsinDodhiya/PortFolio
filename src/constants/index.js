@@ -90,14 +90,14 @@ const technologies = [
   // Fundamental
   { name: "HTML 5", icon: html },
   { name: "CSS 3", icon: css },
-  { name: "JavaScript", icon: javascript },
-  { name: "TypeScript", icon: typescript },
+  // { name: "JavaScript", icon: javascript },
+  // { name: "TypeScript", icon: typescript },
   { name: "Figma", icon: figma },
 
   // Frontend Development
   { name: "React.js", icon: reactjs },
-  { name: "Next.js", icon: nextjs },
-  { name: "ShadCN UI", icon: shadcn },
+  // { name: "Next.js", icon: nextjs },
+  // { name: "ShadCN UI", icon: shadcn },
   { name: "Tailwind CSS", icon: tailwind },
 
   // State Management
@@ -106,11 +106,11 @@ const technologies = [
   { name: "Context API", icon: contextapi },
 
   // Real-Time Communication
-  { name: "Socket.IO", icon: socketio },
+  // { name: "Socket.IO", icon: socketio },
 
   // Backend & Database
   { name: "Node.js", icon: nodejs },
-  { name: "Express.js", icon: express },
+  // { name: "Express.js", icon: express },
   { name: "MongoDB", icon: mongodb },
   { name: "Prisma", icon: prisma },
   { name: "Appwrite", icon: appwrite },
@@ -122,10 +122,10 @@ const technologies = [
 
   // Data Management
   { name: "TanStack/React Query", icon: reactquery },
-  { name: "Axios", icon: axios },
+  // { name: "Axios", icon: axios },
 
   // File Handling
-  { name: "React Dropzone", icon: dropzone },
+  // { name: "React Dropzone", icon: dropzone },
 
   // Deployment & Version Control
   { name: "Git", icon: git },
