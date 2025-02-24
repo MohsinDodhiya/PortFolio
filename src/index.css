@@ -1,9 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* @import "tailwindcss"; */
+
 * {
   margin: 0;
   padding: 0;
@@ -19,6 +20,13 @@
 .omd1{
   outline: 5px solid rgb(255, 0, 187);
 }
+
+.dropMd{
+  filter: drop-shadow(0 0 10px rgba(167, 39, 255, 0.6))
+    drop-shadow(0 0 20px rgba(167, 39, 255, 0.4))
+    drop-shadow(0 0 30px rgba(167, 39, 255, 0.4));
+}
+
 .hash-span {
   margin-top: -100px;
   padding-bottom: 100px;
@@ -131,6 +139,7 @@
   animation: mulShdSpin 1.1s infinite ease;
   transform: translateZ(0);
 }
+
 
 @keyframes mulShdSpin {
   0%,

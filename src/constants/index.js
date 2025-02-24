@@ -1,42 +1,7 @@
 import {
   web,
   backend,
-
-  // html,
-  // css,
-  // javascript,
-  // typescript,
-  // figma,
-
-  // reactjs,
-  // nextjs,
-  // shadcn,
-  // tailwind,
-
-  // redux,
-  // zustand,
-  // contextapi,
-
-  // socketio,
-
-  // nodejs,
-  // express,
-  // mongodb,
-  // prisma,
-  // appwrite,
-  // firebase,
-
-  // reacthookform,
-  // zod,
-
-  // reactquery,
-  // axios,
-
-  // dropzone,
-
-  // git,
   github,
-  // vercel,
   Snapgram1,
   chatApp,
   feedBack,
@@ -77,6 +42,37 @@ import dropzone from "../assets/tech/dropzone.png";
 
 import git from "../assets/tech/git.png";
 import vercel from "../assets/tech/vercel.png";
+
+export {
+  html,
+  css,
+  javascript,
+  typescript,
+  figma,
+  reactjs,
+  nextjs,
+  shadcn,
+  tailwind,
+  redux,
+  zustand,
+  contextapi,
+  socketio,
+  nodejs,
+  express,
+  mongodb,
+  prisma,
+  appwrite,
+  firebase,
+  reacthookform,
+  zod,
+  reactquery,
+  axios,
+  dropzone,
+  github,
+  git,
+  vercel
+};
+
 
 export const navLinks = [
   {

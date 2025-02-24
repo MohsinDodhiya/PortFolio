@@ -502,7 +502,8 @@ const ReactJS = ({
         <motion.div
           ref={mountRef}
           className={`absolute inset-0 flex justify-center items-center overflow-hidden
-                     ${isInteracting ? "cursor-grabbing" : "cursor-grab"}`}
+                     ${isInteracting ? "cursor-grabbing dropMd" : "cursor-grab"}`}
+            
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
