@@ -1,40 +1,29 @@
+// src/components/canvas/GlassIcons.jsx
 const GlassIcons = ({ items = [], className }) => {
   const renderIcon = (item) => {
     if (!item || !item.icon) return null;
 
-    if (
-      typeof item.icon === "string" &&
-      (item.icon.startsWith("http") || item.icon.startsWith("/"))
-    ) {
-      return (
-        <img
-          src={item.icon || "/placeholder.svg"}
-          alt={item.label || ""}
-          className="w-full h-full object-contain"
-          style={{
-            filter: `
-              drop-shadow(0 0 10px rgba(167, 39, 255, 0.6))
-              drop-shadow(0 0 20px rgba(167, 39, 255, 0.4))
-              drop-shadow(0 0 30px rgba(167, 39, 255, 0.2))
-            `,
-          }}
-        />
-      );
-    }
+    const handleImageError = (e) => {
+      console.error(`Failed to load image for ${item.label}`);
+      e.target.onerror = null;
+      e.target.src = '/placeholder.svg';
+    };
+
     return (
-      <div
-        className="w-[3.5em] h-[3.5em] flex items-center justify-center"
+      <img
+        src={item.icon}
+        alt={item.label || ""}
+        className="w-full h-full object-contain"
+        onError={handleImageError}
+        loading="lazy"
         style={{
           filter: `
             drop-shadow(0 0 10px rgba(167, 39, 255, 0.6))
             drop-shadow(0 0 20px rgba(167, 39, 255, 0.4))
             drop-shadow(0 0 30px rgba(167, 39, 255, 0.2))
           `,
-          transform: "scale(1.5)",
         }}
-      >
-        {item.icon}
-      </div>
+      />
     );
   };
 

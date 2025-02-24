@@ -1,48 +1,82 @@
 import {
   web,
   backend,
- 
-  html,
-  css,
-  javascript,
-  typescript,
-  figma,
 
-  reactjs,
-  nextjs,
-  shadcn,
-  tailwind,
-  
-  redux,
-  zustand,
-  contextapi,
+  // html,
+  // css,
+  // javascript,
+  // typescript,
+  // figma,
 
-  socketio,
+  // reactjs,
+  // nextjs,
+  // shadcn,
+  // tailwind,
 
-  nodejs,
-  express,
-  mongodb,
-  prisma,
-  appwrite,
-  firebase,
-  
-  reacthookform,
-  zod,
+  // redux,
+  // zustand,
+  // contextapi,
 
-  reactquery,
-  axios,
- 
-  dropzone,
+  // socketio,
 
-  git,
+  // nodejs,
+  // express,
+  // mongodb,
+  // prisma,
+  // appwrite,
+  // firebase,
+
+  // reacthookform,
+  // zod,
+
+  // reactquery,
+  // axios,
+
+  // dropzone,
+
+  // git,
   github,
-  vercel,
-
+  // vercel,
   Snapgram1,
   chatApp,
   feedBack,
   blogApp,
 } from "../assets";
+
+import html from "../assets/tech/html.png";
+import css from "../assets/tech/css.png";
+import javascript from "../assets/tech/javascrip.png";
+import typescript from "../assets/tech/typescript.png";
+import figma from "../assets/tech/figma.png";
+
+import reactjs from "../assets/tech/reactjs.png";
+import nextjs from "../assets/tech/nextjs.png";
+import shadcn from "../assets/tech/shadcn.png";
+import tailwind from "../assets/tech/tailwind.png";
+
+import redux from "../assets/tech/redux.png";
+import zustand from "../assets/tech/zustand.png";
+import contextapi from "../assets/tech/contextapi.png";
+
+import socketio from "../assets/tech/socketio.png";
+
+import nodejs from "../assets/tech/nodejs.png";
+import express from "../assets/tech/express.png";
+import mongodb from "../assets/tech/mongodb.png";
+import prisma from "../assets/tech/prisma.png";
+import appwrite from "../assets/tech/appwrite.png";
+import firebase from "../assets/tech/firebase.png";
+
+import reacthookform from "../assets/tech/reacthookform.png";
+import zod from "../assets/tech/zod.png";
+
+import reactquery from "../assets/tech/reactquery.png";
+import axios from "../assets/tech/axios.png";
+
+import dropzone from "../assets/tech/dropzone.png";
+
+import git from "../assets/tech/git.png";
+import vercel from "../assets/tech/vercel.png";
 
 export const navLinks = [
   {
