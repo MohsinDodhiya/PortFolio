@@ -7,7 +7,7 @@ import close from "./close.svg";
 
 import html from "./tech/html.png";
 import css from "./tech/css.png";
-import javascript from "./tech/javascript.png";
+import javascript from "./tech/javascrip.png";
 import typescript from "./tech/typescript.png";
 import figma from "./tech/figma.png";
 

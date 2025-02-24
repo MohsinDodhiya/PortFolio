@@ -7,7 +7,7 @@ import { ReactJS } from "./canvas";
 
 const Hero = () => {
   return (
-    <section className="relative w-full h-screen mx-auto overflow-hidden">
+    <section className="relative w-full h-[700px] md:h-[640px] mx-auto overflow-hidden">
       {/* Text and Intro Section */}
       <div
         className={`absolute inset-0 top-[100px] md:top-[150px] max-w-7xl mx-auto ${styles.paddingX} flex flex-row items-start gap-5`}
@@ -74,7 +74,7 @@ const Hero = () => {
       {/* 3D Model Section - Responsive positioning */}
       <motion.div
         variants={slideIn("right", "tween", 0.2, 1)}
-        className="absolute top-[300px] md:top-[100px] bottom-0 right-[10px] w-full md:w-1/2 lg:w-2/5 h-[300px] md:h-[400px] pl-0 md:pl-8"
+        className="absolute top-[390px] md:top-[100px] bottom-0 right-[10px] w-full md:w-1/2 lg:w-2/5 h-[300px] md:h-[400px] pl-0 md:pl-8"
       >
         <ReactJS
           modelConfig={{
@@ -84,8 +84,8 @@ const Hero = () => {
           }}
           containerClassName="w-full h-full"
           aspectRatio="auto"
-          mobileZOffset={12}
-          desktopZOffset={10}
+          mobileZOffset={13}
+          desktopZOffset={11}
         />
       </motion.div>
     </section>
